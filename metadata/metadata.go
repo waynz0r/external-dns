@@ -83,8 +83,10 @@ func (m *MetadataClient) getContainersDnsRecords(dnsEntries map[string]utils.Dns
 		// Accepts 'always', 'auto' (default), or 'never'
 		policy, ok := service.Labels["io.rancher.service.external_dns"]
 		if !ok {
-			policy = "auto"
-		} else if policy == "never" {
+			policy = config.DefaultPolicy
+		}
+
+		if policy == "never" {
 			logrus.Debugf("Service %v is Disabled", service.Name)
 			continue
 		}

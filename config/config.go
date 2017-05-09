@@ -19,6 +19,7 @@ var (
 	CattleAccessKey string
 	CattleSecretKey string
 	NameTemplate    string
+	DefaultPolicy   string
 )
 
 func SetFromEnvironment() {
@@ -30,6 +31,13 @@ func SetFromEnvironment() {
 	if len(NameTemplate) == 0 {
 		NameTemplate = defaultNameTemplate
 	}
+
+	DefaultPolicy = os.Getenv("DEFAULT_POLICY")
+	if DefaultPolicy != "auto" && DefaultPolicy != "always" && DefaultPolicy != "never" {
+		DefaultPolicy = "auto"
+	}
+
+	logrus.Infof("Default policy is set to '%s'", DefaultPolicy)
 
 	TTLEnv := os.Getenv("TTL")
 	i, err := strconv.Atoi(TTLEnv)
